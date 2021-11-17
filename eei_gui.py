@@ -48,7 +48,7 @@ kismi = st.sidebar.selectbox(
     "Oransal Basınç Modu (dP)",
     dpler)
     
-tol = st.sidebar.number_input("Eğri Uydurma Aralığı [+-Q]",value=2)
+tol = st.sidebar.number_input("Eğri Uydurma Aralığı [+-Q]",value=2.0)
 #☻veriekle = st.sidebar.number_input("Değişken devir için veri ekle",value=0)
 
 ###############################################################################
