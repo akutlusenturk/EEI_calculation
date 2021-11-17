@@ -24,6 +24,11 @@ st.sidebar.title("Kontrol Paneli")
 dosya = st.sidebar.file_uploader('Azami ayarda manuel veri.')
 kismi = st.sidebar.file_uploader("Değişken devirde kontrollü veri.")
 
+if dosya is None:
+    dosya = "Wilo_Stratos_azami_deney_2021Nov16_16.56.21.xlsx"
+if kismi is None:
+    kismi = "Wilo_Strator_dP5.3_deney_2021Nov16_17.18.43.xlsx"
+
 tol = st.sidebar.number_input("Tolerans",value=0.5)
 #☻veriekle = st.sidebar.number_input("Değişken devir için veri ekle",value=0)
 
