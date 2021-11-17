@@ -419,7 +419,7 @@ kols_3[0].write("** P_ref = %.2f **" %Pref)
 kols_3[1].write(" * Referans Güç (P_ref) hesaplandı.")
 
 with konteyner_3.expander("TS EN 16297-1:2013-04 atıf"):
-    st.image("fig\\TSE_3.png")
+    st.image("fig/TSE_3.png")
     
 ###############################################################################
 # Tolerans hesabı (Gereksiz?)
@@ -438,7 +438,7 @@ with konteyner_3.expander("TS EN 16297-1:2013-04 atıf"):
 # kols_4[1].write("** H_100 - t = %.2f **"%H_100tol)
 
 # with konteyner_4.expander("TS EN 16297-1:2013-04 atıf"):
-#     st.image("TSE_4.png")
+#     st.image("fig/TSE_4.png")
 
 ###############################################################################
 # Referans kontrol eğrisi
@@ -486,7 +486,7 @@ kols_5[4].write("H_100=%.2f"%Hrefl[4])
 
 
 with konteyner_5.expander("TS EN 16297-1:2013-04 atıf"):
-    st.image("fig\\TSE_5.png")
+    st.image("fig/TSE_5.png")
     
 
 ###############################################################################
@@ -574,7 +574,7 @@ kols_8[4].write("%% dQ_100=%.2f"%percerQ[3])
 kols_8[4].write("%% dH_100=%.2f"%percerH[3])
 
 with konteyner_8.expander("TS EN 16297-1:2013-04 atıf"):
-    st.image("fig\\TSE_8.png")
+    st.image("fig/TSE_8.png")
 
 ###############################################################################
 # PLavg
@@ -594,10 +594,10 @@ kols_9[1].write("PLavg = %.2f" %PLavg)
 
 
 with konteyner_9.expander("TS EN 16297-1:2013-04 atıf"):
-    st.image("fig\\TSE_9.png")
+    st.image("fig/TSE_9.png")
 
 with konteyner_9.expander("TS EN 16297-2:2013-04 atıf"):
-    st.image("fig\\TSE_7.png")
+    st.image("fig/TSE_7.png")
     
 ###############################################################################
 # EEI
@@ -612,10 +612,10 @@ kols_10[1].write("EEI = %.3f"%EEI)
 
 
 with konteyner_10.expander("TS EN 16297-1:2013-04 atıf"):
-    st.image("fig\\TSE_10.png")
+    st.image("fig/TSE_10.png")
 
 with konteyner_10.expander("TS EN 16297-2:2013-04 atıf"):
-    st.image("fig\\TSE_11.png")
+    st.image("fig/TSE_11.png")
 
 
 
