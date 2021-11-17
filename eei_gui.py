@@ -55,14 +55,14 @@ tol = st.sidebar.number_input("Eğri Uydurma Aralığı [+-Q]",value=2)
 # veri okuma & ön düzeltmeler
 ###############################################################################
 
-df = pd.read_excel("max_devir\\"+dosya,index_col=0)
+df = pd.read_excel("max_devir/"+dosya,index_col=0)
 dfh = df.copy()
 df = df.groupby("D",as_index=False).mean()
 df = df[df.Q>0.2]
 df = df[df.H>0.2]
 df = df[df.Phyd>=0]
 
-dfk = pd.read_excel("dP_data\\"+kismi,index_col=0)
+dfk = pd.read_excel("dP_data/"+kismi,index_col=0)
 dfkh = dfk.copy()
 dfk = dfk.groupby("D",as_index=False).mean()
 dfk = dfk[dfk.Q>0.2]
