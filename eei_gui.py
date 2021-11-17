@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from scipy.interpolate import interp1d
+import os
 
 st.set_page_config(
  page_title='EEI',
@@ -12,7 +13,7 @@ st.set_page_config(
 
 st.sidebar.title("EEI Hesaplayıcı")
 st.sidebar.markdown('''
-Pompa verileri yüklendiğinde otomatik olarak hesap yapılacaktır.
+Pompa verilerini seçerek ölçülen değerler ve EEI hesaplarına ulaşabilirsiniz.
 '''
 )
 
@@ -20,30 +21,48 @@ Pompa verileri yüklendiğinde otomatik olarak hesap yapılacaktır.
 # sidebar
 ###############################################################################
 
+st.markdown(f'''
+    <style>
+    section[data-testid="stSidebar"] .css-ng1t4o {{width: 40rem;}}
+    </style>
+''',unsafe_allow_html=True)
+
 st.sidebar.title("Kontrol Paneli")
-dosya = st.sidebar.file_uploader('Azami ayarda manuel veri.')
-kismi = st.sidebar.file_uploader("Değişken devirde kontrollü veri.")
+# dosya = st.sidebar.file_uploader('Azami ayarda manuel veri.')
+# kismi = st.sidebar.file_uploader("Değişken devirde kontrollü veri.")
 
-if dosya is None:
-    dosya = "Wilo_Stratos_azami_deney_2021Nov16_16.56.21.xlsx"
-if kismi is None:
-    kismi = "Wilo_Strator_dP5.3_deney_2021Nov16_17.18.43.xlsx"
+# if dosya is None:
+#     dosya = "Wilo_Stratos_azami_deney_2021Nov16_16.56.21.xlsx"
+# if kismi is None:
+#     kismi = "Wilo_Strator_dP5.3_deney_2021Nov16_17.18.43.xlsx"
+    
+sbtler = os.listdir("max_devir")
 
-tol = st.sidebar.number_input("Tolerans",value=2.7)
+dosya = st.sidebar.selectbox(
+    "Max devirde sabit eğri",
+    sbtler)
+
+dpler = os.listdir("dp_data")    
+
+kismi = st.sidebar.selectbox(
+    "Oransal Basınç Modu (dP)",
+    dpler)
+    
+tol = st.sidebar.number_input("Eğri Uydurma Aralığı [+-Q]",value=2)
 #☻veriekle = st.sidebar.number_input("Değişken devir için veri ekle",value=0)
 
 ###############################################################################
 # veri okuma & ön düzeltmeler
 ###############################################################################
 
-df = pd.read_excel(dosya,index_col=0)
+df = pd.read_excel("max_devir\\"+dosya,index_col=0)
 dfh = df.copy()
 df = df.groupby("D",as_index=False).mean()
 df = df[df.Q>0.2]
 df = df[df.H>0.2]
 df = df[df.Phyd>=0]
 
-dfk = pd.read_excel(kismi,index_col=0)
+dfk = pd.read_excel("dP_data\\"+kismi,index_col=0)
 dfkh = dfk.copy()
 dfk = dfk.groupby("D",as_index=False).mean()
 dfk = dfk[dfk.Q>0.2]
@@ -480,7 +499,7 @@ Qm=np.zeros(4)
 Hm=np.zeros(4)
 Pm=np.zeros(4)
 
-
+st.sidebar.title("Ölçüm Düzeltme")
 st.sidebar.subheader("Q_25 Ölçümleri")
 Qm[0] = st.sidebar.number_input("Q_25",value=Qref[0])
 Hm[0] = st.sidebar.number_input("H_25",value=np.round(intH(Qref[0]),2))
