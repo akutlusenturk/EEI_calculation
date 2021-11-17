@@ -143,7 +143,7 @@ kols_1[1].write("** Phyd_max  :%.2f W **" %(df.Phyd.max()))
 
 
 with konteyner_1.expander("TS EN 16297-1:2013-04 atıf"):
-    st.image("fig\\TSE_1.png")
+    st.image("fig/TSE_1.png")
     
 with konteyner_1.expander("Polyfit Yardımcısı & Verim (%eta)"):
     fig, ax=plt.subplots(1,2)
@@ -404,7 +404,7 @@ kols_2[1].write("** Q_100       :%.2f m³/h **" %(Q_100))
 kols_2[1].write("** H_100       :%.2f m **" %(H_100))
 
 with konteyner_2.expander("TS EN 16297-1:2013-04 atıf"):
-    st.image("fig\\TSE_2.png")
+    st.image("fig/TSE_2.png")
 
 ###############################################################################
 # Pref
