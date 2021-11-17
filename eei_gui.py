@@ -29,7 +29,7 @@ if dosya is None:
 if kismi is None:
     kismi = "Wilo_Strator_dP5.3_deney_2021Nov16_17.18.43.xlsx"
 
-tol = st.sidebar.number_input("Tolerans",value=0.5)
+tol = st.sidebar.number_input("Tolerans",value=2.7)
 #☻veriekle = st.sidebar.number_input("Değişken devir için veri ekle",value=0)
 
 ###############################################################################
@@ -69,8 +69,8 @@ Phydr = df.Phfit.max()
 Q_100 = df.Q[df.Phfit.idxmax()]
 H_100 = Hfit(df.Q[df.Phfit.idxmax()])
 
-dfk = dfk[dfk.Q<=Q_100*1.1]                                                   #veriekle yapılabilir
-dfk = dfk[dfk.Q>=Q_100/5]
+dfk = dfk[dfk.Q<=Q_100*1.3]                                                   #veriekle yapılabilir
+dfk = dfk[dfk.Q>=Q_100/6]
 
 #Pbeyans = df.Phyd.idxmax()
 
