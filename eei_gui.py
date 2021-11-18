@@ -37,7 +37,7 @@ dosya = st.sidebar.selectbox(
     "Max devirde sabit eğri",
     sbtler)
 
-dpler = os.listdir("dp_data")    
+dpler = os.listdir("dP_data")    
 
 kismi = st.sidebar.selectbox(
     "Oransal Basınç Modu (dP)",
