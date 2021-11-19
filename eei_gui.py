@@ -76,7 +76,7 @@ dfk, dP_QHint, dP_QPconsint = dP (kismi)
 
 aralik = st.sidebar.slider(
     "İnterpolasyon aralığını seç (Debi [Q])",
-    df.Q.min(),df.Q.max(),(df.Q.min(),df.Q.max()))
+    df.Q.min(),df.Q.max(),(float(df.Q.min()),float(df.Q.max())))
 aralik = np.array(aralik)
 
 kes=df[df.Q.between(aralik[0],aralik[1])]                                       
