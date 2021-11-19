@@ -27,7 +27,7 @@ def dP (dosya, groupby = "D", minQ = 0.1, minH = 0.1, minPhyd = 0.1):
     QPconsint =interp1d(df.Q,df.Pcons)
     return df, QHint, QPconsint
 
-def PompaOlcumleri (df,dfk,azami_QHint,dP_QHint,azami_QPconsint,dP_QPconsint,Q_tah,tol):
+def PompaOlcumleri (df,dfk,azami_QHint,dP_QHint,azami_QPconsint,dP_QPconsint,aralik):
 
     fig, ax=plt.subplots(2,1,sharex=True)
     fig.set_size_inches(8,8)
@@ -36,7 +36,7 @@ def PompaOlcumleri (df,dfk,azami_QHint,dP_QHint,azami_QPconsint,dP_QPconsint,Q_t
     ax[0].scatter(df.Q,df.H,color="violet",s=15)
     ax[0].plot(df.Q,azami_QHint(df.Q),color="black")
     ax[0].set_title("Pompa Ölçümleri")
-    ax[0].set_ylabel("Basma Yüksekliği")
+    ax[0].set_ylabel("Basma Yüksekliği (H) [m]")
     ax[0].set_ylim(bottom=0)
     ax[0].set_xlim(left=0)
     ax[0].grid()
@@ -46,15 +46,15 @@ def PompaOlcumleri (df,dfk,azami_QHint,dP_QHint,azami_QPconsint,dP_QPconsint,Q_t
     ax[0].scatter(dfk.Q,dfk.H,color="orange",s=15)
     ax[0].plot(dfk.Q,dP_QHint(dfk.Q),color="red")  
      
-    ax[0].scatter(Q_tah-tol,azami_QHint(Q_tah-tol),color="r",marker="|",s=700)
-    ax[0].scatter(Q_tah+tol,azami_QHint(Q_tah+tol),color="r",marker="|",s=700)
+    ax[0].scatter(aralik[0],azami_QHint(aralik[0]),color="r",marker="|",s=700)
+    ax[0].scatter(aralik[1],azami_QHint(aralik[1]),color="r",marker="|",s=700)
     
     ax[0].legend(["Sabit Eğri İnterpolasyon","Değişken Basınç İnterpolasyon","Sabit Eğri Ölçüm","Değişken Basınç Ölçüm","Eğri Uydurma Aralığı"])                                      
     
     ax[1].scatter(df.Q,df.Pcons,color="violet",s=15)
     ax[1].plot(df.Q,azami_QPconsint(df.Q),color="black")
-    ax[1].set_ylabel("Güç Tüketimi")
-    ax[1].set_xlabel("Debi")
+    ax[1].set_ylabel("Güç Tüketimi (Pcons) [W]")
+    ax[1].set_xlabel("Debi (Q) [m³/h]")
     ax[1].set_ylim(bottom=0)
     ax[1].set_xlim(left=0)
     ax[1].grid()
@@ -127,6 +127,13 @@ def duzeltilmisQH (df,Hfit,Q_100,H_100,Phydr):
     ax[0].plot(np.linspace(0,Q_100,10),np.full(10,H_100),linestyle="-.",color="orange")
     ax[1].plot(np.full(10,Q_100),np.linspace(0,Phydr,10),linestyle="-.",color="orange")
     return fig
+
+def sinif (ponpa, dpler):
+    dPonpa=[]
+    for i in dpler:
+        if i.startswith(ponpa):
+            dPonpa.append(i)
+    return dPonpa
 
 # def RefKontrol (df,dfk,Hfit,dP_QHint,Qrefl,Hrefl):
 

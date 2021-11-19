@@ -14,13 +14,28 @@ st.set_page_config(
 
 st.sidebar.title("EEI Hesaplayıcı")
 st.sidebar.markdown('''
-Pompa verilerini seçerek ölçülen değerler ve EEI hesaplarına ulaşabilirsiniz.
+Pompa verilerini ve interpolasyon aralığını seçerek ölçülen değerler ve EEI hesaplarına ulaşabilirsiniz.
 '''
 )
 
 ###############################################################################
 # sidebar
 ###############################################################################
+
+st.markdown(
+    """
+    <style>
+    [data-testid="stSidebar"][aria-expanded="true"] > div:first-child {
+        width: 400px;
+    }
+    [data-testid="stSidebar"][aria-expanded="false"] > div:first-child {
+        width: 500px;
+        margin-left: -500px;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
 
 st.sidebar.title("Kontrol Paneli")
 # dosya = st.sidebar.file_uploader('Azami ayarda manuel veri.')
@@ -31,20 +46,22 @@ st.sidebar.title("Kontrol Paneli")
 # if kismi is None:
 #     kismi = "Wilo_Strator_dP5.3_deney_2021Nov16_17.18.43.xlsx"
     
-sbtler = os.listdir("max_devir")
+sbtler = sorted(os.listdir("max_devir"))
 
 dosya = st.sidebar.selectbox(
     "Max devirde sabit eğri",
     sbtler)
 
-dpler = os.listdir("dP_data")    
+ponpa = dosya.split(".xlsx")[0]
+
+dpler = sorted(os.listdir("dP_data"))
+
+dPonpa = sinif (ponpa,dpler)
 
 kismi = st.sidebar.selectbox(
     "Oransal Basınç Modu (dP)",
-    dpler)
+    dPonpa)
     
-tol = st.sidebar.number_input("Eğri Uydurma Aralığı [+-Q]",value=2.0)
-#☻veriekle = st.sidebar.number_input("Değişken devir için veri ekle",value=0)
 
 ###############################################################################
 # veri okuma & ön düzeltmeler
@@ -53,9 +70,16 @@ tol = st.sidebar.number_input("Eğri Uydurma Aralığı [+-Q]",value=2.0)
 df, azami_QHint, azami_QPconsint = azami (dosya)
 dfk, dP_QHint, dP_QPconsint = dP (kismi)
 
-Q_tah = st.sidebar.number_input("Nominal debi.",value=df.Q[df.Phyd.idxmax()])  
+#Q_tah = st.sidebar.number_input("Nominal debi.",value=df.Q[df.Phyd.idxmax()])  
+#tol = st.sidebar.number_input("Eğri Uydurma Aralığı [+-Q]",value=2.0)
+#☻veriekle = st.sidebar.number_input("Değişken devir için veri ekle",value=0)
 
-kes=df[df.Q.between(Q_tah-tol,Q_tah+tol)]                                       
+aralik = st.sidebar.slider(
+    "İnterpolasyon aralığını seç (Debi [Q])",
+    df.Q.min(),df.Q.max(),(df.Q.min(),df.Q.max()))
+aralik = np.array(aralik)
+
+kes=df[df.Q.between(aralik[0],aralik[1])]                                       
 Hfit = np.poly1d(np.polyfit(kes.Q,kes.H,3))
 df["Phfit"] = df.Q*Hfit(df.Q)*2.72
 Phydr = df.Phfit.max()
@@ -73,7 +97,7 @@ dfk = dfk[dfk.Q>=Q_100/6]
 konteyner_1 = st.container()
 kols_1 = konteyner_1.columns([1,1])
 
-fig = PompaOlcumleri (df,dfk,azami_QHint,dP_QHint,azami_QPconsint,dP_QPconsint,Q_tah,tol)
+fig = PompaOlcumleri (df,dfk,azami_QHint,dP_QHint,azami_QPconsint,dP_QPconsint,aralik)
 kols_1[0].pyplot(fig)
 
 kols_1[1].markdown("""* Pompa Ölçümleri test düzeneğinde yapıldı.
@@ -325,7 +349,6 @@ with konteyner_8.expander("TS EN 16297-1:2013-04 atıf"):
 konteyner_9 = st.container()
 kols_9 = konteyner_9.columns([1,1,1])
 
-
 pb = Pm*(Href>= Hm)*Href/Hm
 pk = Pm*(Href<Hm)
 Pl = pb + pk
@@ -334,7 +357,6 @@ L=np.array([0.44,0.35,0.15,0.06])
 PLavg=(Pl*L).sum()
 
 kols_9[1].write("PLavg = %.2f" %PLavg)
-
 
 with konteyner_9.expander("TS EN 16297-1:2013-04 atıf"):
     st.image("fig/TSE_9.png")
